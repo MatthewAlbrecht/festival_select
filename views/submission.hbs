@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Festival Select</title>
+
+    <!-- Jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.0.min.js"
+      integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I="
+      crossorigin="anonymous"></script>
+
+
+      <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+      <script src="javascripts/button.js"></script>
+
+  </head>
+  <body>
+    <h1 class="center-align">{{title}}</h1>
+    <h3>{{name}}</h3>
+
+
+<main class="container">
+
+  <form method="post">
+    <div class="input-field">
+      <input name="fest_name" placeholder="Bonnapaloozachella" id="fest_name" type="text" class="validate">
+      <label for="fest_name">Festival Name</label>
+    </div>
+    <div class="input-field">
+      <textarea id="artist-names" name="artist_names" class="materialize-textarea"></textarea>
+      <label for="artist-names">Artist Names</label>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit">Submit
+    <i class="material-icons right">send</i>
+  </button>
+
+  </form>
+</main>
+
+  </body>
+</html>
