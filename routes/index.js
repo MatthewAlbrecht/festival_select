@@ -6,7 +6,6 @@ const path = require('path');
 const festPath = path.join(__dirname, '../festivals.json')
 const artistPath = path.join(__dirname, '../artists.json')
 const database = require('../knex');
-const async = require('async');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,7 +16,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/db/:table', (req, res, next) => {
   let tableName = req.params.table
-  database(tableName).select()
+  database(tableName).select().orderBy('id', 'desc')
     .then(function(table) {
       res.status(200).json(table);
     })
@@ -31,26 +30,6 @@ router.post('/reset', (req, res, next) => {
     if (err) throw error;
     let bigAssArtistArray = JSON.parse(data)
     createAritstAndAAFTables(bigAssArtistArray, res, req)
-    // database('festivals').select()
-    //   .then(function(festivals) {
-    //     let festCheckID = createFestivalObject(JSON.parse(JSON.stringify(festivals)))
-    //
-    //     for (let i = 0; i < bigAssArtistArray.length; i++) {
-    //       let artistToPlayWith = bigAssArtistArray[i]
-    //       updateArtistsTable(artistToPlayWith, req, res)
-    //         .then(id => {
-    //           console.log("HOPEFULLY NOT PROMISE", id);
-    //           for (festival of artistToPlayWith.festivals) {
-    //             console.log(festival, artistToPlayWith.festivals);
-    //             updateArtistAtFestivalsTable(festival, id, festCheckID, req, res)
-    //           }
-    //         })
-    //     }
-    //     res.sendStatus(200)
-    //   })
-    // .catch(function(error) {
-    //   console.error('somethings wrong with db this one')
-    // });
   })
 })
 
@@ -71,7 +50,7 @@ const updateArtistsTable = (artistObj) => {
 
 const updateFestivalsTable = (festival) => {
   return database('festivals').returning('id').insert({
-    name: festival
+    name: festival.toLowerCase()
   })
 }
 

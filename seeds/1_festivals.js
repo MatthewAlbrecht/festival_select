@@ -3,7 +3,7 @@ exports.seed = function(knex, Promise) {
     .then(() => {
       return Promise.all([
         knex('festivals').insert({
-          id: 1,
+          id: 13,
           name: 'bonnaroo'
         }),
         knex('festivals').insert({
