@@ -56,19 +56,19 @@ const handleArtists = (results) => {
           // console.log('eeeeeeeeeeeeeeeee');
           addArtist(artistPromise[1])
             .then((id) => {
-              ids.push(id[0]);
-              // console.log('gimmieID-LATER', id[0]);
-            })
-            .then(handleAAF)
-            .then((data) => {
-              Promise.all(data)
-                .then(data => {
-
+              addAAF(festID, id[0])
+                .then((rez) => {
+                  console.log('DIDNT EXIST', rez);
                 })
             })
+
         } else {
           ids.push(res[0].id);
-          // console.log('gimmieID-NOW', res[0].id);
+          addAAF(festID, res[0].id)
+            .then((rez) => {
+              console.log('DIDDIDIDIIDIDIDIDII EXIST', rez);
+
+            })
         }
       })
   })
@@ -78,19 +78,9 @@ const handleArtists = (results) => {
 
 }
 // console.log(artistArray);
-let count = 0
-const handleAAF = (data) => {
-  count++
 
-  console.log('iv been heer ' + count + ' manytimes');
-  console.log(count, '----------------', ids.length);
-  // console.log('fest', festID, 'artist', ids);
-  let somePromises = []
-  for (anID of ids) {
-    // console.log('-------THIS IS ANID FESTID-------[]', anID, festID);
-    somePromises.push(addAAF(festID, anID))
-  }
-  // return somePromises
+const handleAAF = (data) => {
+
 
 }
 const addAAF = (fest, artist) => database('artist_at_festivals').insert({
