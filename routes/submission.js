@@ -5,7 +5,7 @@ const database = require('../knex')
 let artistArray = undefined;
 let ids = []
 let festID = undefined
-/* GET users listing. */
+
 router.get('/', function(req, res, next) {
   res.render('submission', {
     title: 'Submit New Festival'
@@ -13,52 +13,48 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  // console.log('heehe');
   let name = req.body.fest_name
   artistArray = req.body.artist_names.split(', ')
-  // console.log(typeof artistArray);
   validateSubmisson(req, res, artistArray, name)
-  addFestival(name)
-    .then(handleArtists)
+  res.render('added', {
+    title: `SUCCESSFULLY ADDED ${name.toUpperCase()}`
+  })
 })
 
 
 let validateSubmisson = (req, res, artistArray, name) => {
   if (!artistArray || !name || artistArray.length < 15) {
+    console.log('going wrong in first');
     res.sendStatus(400)
   }
   console.log('----------------------------');
   database('festivals').where('name', name.toLowerCase()).select()
     .then((results) => {
-      if (results) {
-        // console.log(results);
+      if (results.length) {
+        console.log('going wrong in second');
         res.sendStatus(400)
+      } else {
+        addFestival(name)
+          .then(handleArtists)
       }
     })
 }
 
-
-const addFestival = (name) => database('festivals').returning('id').insert({
-  'name': name.toLowerCase()
-})
-
 const handleArtists = (results) => {
   festID = results[0]
   let pArray = []
-
+  let count = 0
+  let numOfArtists = artistArray.length
   pArray = artistArray.map(artist => [checkArtist(artist), artist]).map((artistPromise) => {
-    // console.log('FFFFFFFFFFFFFFFFFF', artistPromise[0]);
 
     artistPromise[0]
       .then(res => {
-        // console.log('---------------------', typeof res, res, res === []);
         if (!res.length) {
-          // console.log('eeeeeeeeeeeeeeeee');
           addArtist(artistPromise[1])
             .then((id) => {
               addAAF(festID, id[0])
                 .then((rez) => {
-                  console.log('DIDNT EXIST', rez);
+                  count++
                 })
             })
 
@@ -66,23 +62,16 @@ const handleArtists = (results) => {
           ids.push(res[0].id);
           addAAF(festID, res[0].id)
             .then((rez) => {
-              console.log('DIDDIDIDIIDIDIDIDII EXIST', rez);
-
+              count++
             })
         }
       })
   })
-
-
-
-
 }
-// console.log(artistArray);
+const addFestival = (name) => database('festivals').returning('id').insert({
+  'name': name.toLowerCase()
+})
 
-const handleAAF = (data) => {
-
-
-}
 const addAAF = (fest, artist) => database('artist_at_festivals').insert({
   artist_id: artist,
   festival_id: fest
@@ -90,7 +79,6 @@ const addAAF = (fest, artist) => database('artist_at_festivals').insert({
 const addArtist = (artist) => database('artists').returning('id').insert({
   name: artist.toLowerCase()
 })
-
 const checkArtist = (artist) =>
   database('artists').where('name', artist.toLowerCase()).select()
 

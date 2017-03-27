@@ -10,7 +10,6 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('festivals', table => {
       table.increments('id')
         .primary()
-
       table.text('name')
         .notNullable()
     }),
@@ -40,6 +39,6 @@ exports.down = function(knex, Promise) {
   return Promise.all([
     knex.schema.dropTable('artist_at_festivals'),
     knex.schema.dropTable('artists'),
-    knex.schema.dropTable('festivals'),
+    knex.schema.dropTable('festivals')
   ])
 };

@@ -17,19 +17,25 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <script src="javascripts/button.js"></script>
+    <script src="../javascripts/button.js"></script>
+    <link rel="stylesheet" href="../stylesheets/style.css">
 
 </head>
 
 <body>
-    <h1 class="center-align">{{title}}</h1>
-    <h3>{{name}}</h3>
+
 
 
 
     <main class="container center-align">
-        <a id="anything" href="/submission" class="waves-effect waves-light btn-large">Add New Festival</a>
-        <a id="check-lineups" href="/lineup" class="waves-effect waves-light btn-large">Lineups</a>
+        <div id="festivals-container">
+            {{#each festivals}}
+                <a href="#"><span class="fest-choices" data-fest-id="{{this.id}}">{{this.name}}</span></a>
+            {{/each}}
+        </div>
+        <div id="artists-container">
+
+        </div>
 
     </main>
 
